@@ -1,0 +1,64 @@
+/* .swiper-button-prev,
+.swiper-button-next {
+  background-color: #191d30;
+  border-radius: .5rem;
+  padding: 20px;
+  top: 10rem;
+
+}
+
+.swiper-button-prev {
+  position: absolute;
+
+}
+
+.swiper-pagination {
+  display: none;
+} */
+
+
+/* CarsSlideshowHome.css */
+.CarsSlideshowHome .swiper-button-prev,
+.CarsSlideshowHome .swiper-button-next {
+  background-color: #191d30;
+  border-radius: 1rem;
+  padding: 20px;
+  top: 10rem;
+}
+
+.CarsSlideshowHome .swiper-button-prev {
+  position: absolute;
+}
+
+.CarsSlideshowHome .swiper-pagination {
+  display: none;
+}
+
+/* Contenedor para bloquear clics en el fondo */
+.CarsSlideshowHome .swiper-button-container {
+  position: absolute;
+  top: 10rem;
+  /* Ubicación ajustada según el botón */
+  background-color: rgba(25, 29, 48, 0.5);
+  /* Fondo semitransparente */
+  border-radius: 1rem;
+  padding: 20px;
+  z-index: 10;
+}
+
+/* Estilos de los botones */
+.CarsSlideshowHome .swiper-button-prev,
+.CarsSlideshowHome .swiper-button-next {
+  background-color: #191d30;
+  border-radius: 1rem;
+  padding: 20px;
+}
+
+/* Botón deshabilitado para evitar clics */
+.CarsSlideshowHome .swiper-button-disabled {
+  opacity: 0.5;
+  
+  /* pointer-events: none; */
+  /* display: none; */
+  /* Solo el botón deja de ser interactivo */
+}

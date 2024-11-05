@@ -1,0 +1,108 @@
+/* Personalización de los botones de navegación */
+.image-gallery-icon {
+  color: #FFF;
+  /* Cambia el color del ícono (por ejemplo, rojo) */
+
+}
+
+.image-gallery-icon:hover {
+  color: #00a3e0;
+  /* Cambia el color al pasar el ratón (por ejemplo, azul) */
+}
+
+.image-gallery-slide .image-gallery-left-nav,
+.image-gallery-slide .image-gallery-right-nav {
+  /* background-color: rgba(0, 0, 0, 0.5); */
+
+
+  /* Fondo semitransparente */
+}
+
+.image-gallery-slide .image-gallery-left-nav:hover,
+.image-gallery-slide .image-gallery-right-nav:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  /* Fondo más oscuro al pasar el ratón */
+}
+
+
+/* Estilo para el botón de navegación izquierda */
+.image-gallery-left-nav {
+  display: none !important;
+  margin-left: 1rem;
+  width: 50px;
+  /* Ajusta el tamaño del botón */
+  height: 50px;
+  /* Ajusta el tamaño del botón */
+  background-color: #fff;
+  /* Color de fondo con opacidad */
+  border-radius: 15px;
+  /* Haz que los bordes sean redondeados */
+  color: #191d30;
+  padding: 1rem;
+  /* Color del ícono */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilo para el botón de navegación derecha */
+.image-gallery-right-nav {
+  display: none !important;
+  margin-right: 1rem;
+  width: 50px;
+  /* Ajusta el tamaño del botón */
+  height: 50px;
+  /* Ajusta el tamaño del botón */
+  background-color: #fff;
+  /* Color de fondo con opacidad */
+  border-radius: 15px;
+  /* Haz que los bordes sean redondeados */
+  color: #191d30;
+  padding: 1rem;
+  /* Color del ícono */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+}
+
+/* Cambiar el color de fondo al pasar el ratón */
+.image-gallery-left-nav:hover,
+.image-gallery-right-nav:hover {
+  background-color: #191d30;
+  /* Fondo más oscuro al pasar el mouse */
+}
+
+
+
+.image-gallery-left-nav svg,
+.image-gallery-right-nav svg {
+  stroke-width: 2;
+  height: 20px;
+  /* Aumenta el grosor de las líneas del SVG */
+}
+
+/* Cambia el color al hacer hover en el botón */
+.image-gallery-left-nav:hover svg,
+.image-gallery-right-nav:hover svg {
+  stroke: #fff;
+  /* Nuevo color del trazo al hacer hover */
+}
+
+.image-gallery-svg {
+  height: 30px !important;
+}
+
+.image-gallery-thumbnail.active,
+.image-gallery-thumbnail:focus {
+  border-color: #00a3e0;
+}
+
+
+@media (min-width:750px) {
+
+  .image-gallery-right-nav,
+  .image-gallery-left-nav {
+    display: flex !important;
+  }
+}

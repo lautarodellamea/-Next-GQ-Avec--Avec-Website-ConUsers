@@ -1,0 +1,61 @@
+
+/* Peugeot svg */
+.brand-home-peugeot-svg-1 {
+  fill: #fff;
+}
+
+.brand-home-peugeot-svg-2 {
+  fill: none;
+}
+
+/* Citroen */
+.brand-home-citroen-svg-1 {
+  fill: #fff;
+}
+
+
+/* DS */
+.brand-home-ds-svg-1 {
+  fill: #fff;
+}
+
+.brand-home-ds-svg-2 {
+  fill: none;
+}
+
+/* Fiat */
+.brand-home-fiat-svg-1 {
+  fill: #fff;
+}
+
+.brand-home-fiat-svg-2 {
+  isolation: isolate;
+      }
+
+.brand-home-fiat-svg-3 {
+  fill: #fff;
+}
+
+
+/* general */
+
+
+.brand-home-item{
+  @apply flex justify-center items-center max-w-[200px] h-[60px] sm:h-20 rounded-sm hover:bg-white transition-all 2xl:h-28
+}
+
+.brand-home-item svg{
+  @apply  h-[60px] sm:h-20 2xl:h-28
+}
+
+.brand-home-item:hover .brand-home-citroen-svg-1, 
+.brand-home-item:hover .brand-home-ds-svg-1, 
+.brand-home-item:hover .brand-home-fiat-svg-3 {
+  fill: #000;
+  transition: all .3s ease
+}
+
+.brand-svg-ds{
+  position: relative;
+  top: 4px;
+}

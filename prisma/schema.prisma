@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  admin
+  user
+}
+
+model Brand {
+  id   String @id @default(uuid())
+  name String @unique
+
+  // Relación con Car
+  Car Car[]
+}
+
+model Car {
+  id            String  @id @default(uuid())
+  vin           String
+  licensePlate  String
+  operationType String
+  modelName     String
+  modelVersion  String
+  year          Int
+  km            Int
+  color         String
+  transmission  String
+  price         Float
+  fuelType      String
+  location      String
+  engine        String
+  description   String?
+  inStock       Int
+  slug          String  @unique
+  doors         Int
+  currency      String // pesos, dollars
+
+  bodyStyle   String // carroceria
+  vehicleTier String // importado
+
+  // Relation with Brand
+  brandId String
+  brand   Brand  @relation(fields: [brandId], references: [id])
+
+  // Relation with CarImage
+  CarImage CarImage[]
+}
+
+model CarImage {
+  id  Int    @id @default(autoincrement())
+  url String
+
+  // Relación a Car hacia el id de este
+  car   Car    @relation(fields: [carId], references: [id])
+  carId String
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  emailVerified DateTime? // si quisieramos que el usuario verifique su email, etc.
+  password      String
+  role          Role      @default(user)
+  image         String?
+}

@@ -1,0 +1,100 @@
+.CarSlideshowUsed .swiper-button-prev,
+.CarSlideshowUsed .swiper-button-next {
+  background-color: #fff;
+  border-radius: 1rem;
+  padding: 20px;
+  top: 10rem;
+}
+
+@media (min-width: 300px) {
+
+  .CarSlideshowUsed .swiper-button-prev,
+  .CarSlideshowUsed .swiper-button-next {
+    top: 13rem;
+  }
+}
+
+@media (min-width: 350px) {
+
+  .CarSlideshowUsed .swiper-button-prev,
+  .CarSlideshowUsed .swiper-button-next {
+    top: 16rem;
+  }
+}
+
+@media (min-width: 400px) {
+
+  .CarSlideshowUsed .swiper-button-prev,
+  .CarSlideshowUsed .swiper-button-next {
+    top: 19rem;
+  }
+}
+
+@media (min-width: 450px) {
+
+  .CarSlideshowUsed .swiper-button-prev,
+  .CarSlideshowUsed .swiper-button-next {
+    top: 22rem;
+  }
+}
+
+@media (min-width: 650px) {
+
+  .CarSlideshowUsed .swiper-button-prev,
+  .CarSlideshowUsed .swiper-button-next {
+    top: 25rem;
+  }
+}
+
+@media (min-width: 750px) {
+
+  .CarSlideshowUsed .swiper-button-prev,
+  .CarSlideshowUsed .swiper-button-next {
+    top: 28rem;
+  }
+}
+
+@media (min-width: 850px) {
+
+  .CarSlideshowUsed .swiper-button-prev,
+  .CarSlideshowUsed .swiper-button-next {
+    top: 31rem;
+  }
+}
+
+
+.CarSlideshowUsed .swiper-button-prev {
+  position: absolute;
+}
+
+.CarSlideshowUsed .swiper-pagination {
+  /* display: none; */
+}
+
+/* Contenedor para bloquear clics en el fondo */
+.CarSlideshowUsed .swiper-button-container {
+  position: absolute;
+  top: 10rem;
+  /* Ubicación ajustada según el botón */
+  background-color: #fff;
+  /* Fondo semitransparente */
+  border-radius: 1rem;
+  padding: 20px;
+  z-index: 10;
+}
+
+/* Estilos de los botones */
+.CarSlideshowUsed .swiper-button-prev,
+.CarSlideshowUsed .swiper-button-next {
+  background-color: #fff;
+  border-radius: 1rem;
+  padding: 20px;
+}
+
+/* Botón deshabilitado para evitar clics */
+.CarSlideshowUsed .swiper-button-disabled {
+  /* opacity: 0.5; */
+  /* pointer-events: none; */
+  /* display: none; */
+  /* Solo el botón deja de ser interactivo */
+}

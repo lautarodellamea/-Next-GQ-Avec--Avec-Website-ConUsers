@@ -1,0 +1,8 @@
+.logo-sidebar-svg {
+  fill: #05091e;
+}
+
+.backdrop-blur-custom {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}

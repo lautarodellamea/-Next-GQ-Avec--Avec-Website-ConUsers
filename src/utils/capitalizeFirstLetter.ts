@@ -1,0 +1,1 @@
+export const capitalizeFirstLetter = (text: string) => text.replace(/^\w/, (c) => c.toUpperCase());

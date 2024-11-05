@@ -1,0 +1,25 @@
+.embla {
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+  gap: 2rem
+}
+
+.embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+.text-container-slide-home {
+  padding-bottom: 2rem;
+}
+
+
+
+@media (min-height: 620px) {
+  .text-container-slide-home {
+    padding-bottom: 5rem;
+  }
+}

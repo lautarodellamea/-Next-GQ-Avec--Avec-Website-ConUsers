@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 377.41 268.75">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        isolation: isolate;
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <!-- Generator: Adobe Illustrator 28.7.1, SVG Export Plug-In . SVG Version: 1.2.0 Build 142)  -->
+  <g>
+    <g id="Capa_1">
+      <g id="Fiat_LOGO">
+        <g id="Grupo_909">
+          <path id="Caminho_146" class="cls-1" d="M700.77,47.34h-51.68v173.97h23.58v-78.59h26c2.32,14.37,2.52,73.94,2.52,78.59h23.88c.73-44.15.32-126.44-24.32-173.97M672.34,122.55v-55.35h12.63c4.55,11.02,7.76,22.55,9.58,34.33,2,11.42,3.05,21.02,3.05,21.02h-25.26Z"/>
+          <rect id="Retângulo_55" class="cls-1" x="604.51" y="47.34" width="25.9" height="174.07"/>
+          <path id="Caminho_147" class="cls-1" d="M538.89,47.34v174.07h25.9v-78.79h18.95v-20.18h-18.95v-55.03h24.32v-20.07h-50.21Z"/>
+          <path id="Caminho_148" class="cls-1" d="M725.21,47.34v20.07h18.53l.1,153.9h25.53V67.41h18.69v-20.07h-62.85Z"/>
+        </g>
+      </g>
+      <g id="Fiat_LOGO-2" data-name="Fiat_LOGO" class="cls-2">
+        <g id="Grupo_909-2" data-name="Grupo_909">
+          <path id="Caminho_146-2" data-name="Caminho_146" class="cls-3" d="M225.99,47.34h-51.68v173.97h23.58v-78.59h26c2.32,14.37,2.52,73.94,2.52,78.59h23.88c.73-44.15.32-126.44-24.32-173.97M197.56,122.55v-55.35h12.63c4.55,11.02,7.76,22.55,9.58,34.33,2,11.42,3.05,21.02,3.05,21.02h-25.26Z"/>
+          <rect id="Retângulo_55-2" data-name="Retângulo_55" class="cls-3" x="129.74" y="47.34" width="25.9" height="174.07"/>
+          <path id="Caminho_147-2" data-name="Caminho_147" class="cls-3" d="M64.12,47.34v174.07h25.9v-78.79h18.95v-20.18h-18.95v-55.03h24.32v-20.07h-50.21Z"/>
+          <path id="Caminho_148-2" data-name="Caminho_148" class="cls-3" d="M250.44,47.34v20.07h18.53l.1,153.9h25.53V67.41h18.69v-20.07h-62.85Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

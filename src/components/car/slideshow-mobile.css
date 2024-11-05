@@ -1,0 +1,34 @@
+.mySwiper2 {
+  height: 200px;
+  /* Altura para dispositivos móviles */
+  width: 100%;
+}
+
+.mySwiper2-info {
+  position: relative;
+  top: -40px;
+}
+
+@media (min-width: 350px) {
+  .mySwiper2 {
+    height: 380px;
+  }
+}
+@media (min-width: 460px) {
+  .mySwiper2 {
+    height: 350px;
+  }
+}
+@media (min-width: 600px) {
+  .mySwiper2 {
+    height: 400px;
+  }
+}
+
+/* Media query para tablets y pantallas más grandes */
+@media (min-width: 768px) {
+  .mySwiper2 {
+    height: 600px;
+    /* Aumenta la altura en tablets */
+  }
+}
