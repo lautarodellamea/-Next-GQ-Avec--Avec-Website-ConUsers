@@ -3,7 +3,7 @@ export const revalidate = 60; // Revalida cada 60 segundos
 
 
 import { getPaginatedCarWithImages } from "@/actions/cars/car-pagination.action";
-import { AboutHome, BrandsHome, CarouselMain, CarsSlideshowHome, PlanAhorroHome, PostVentaHome } from "@/components";
+import { AboutHome, BrandsHome, CarouselMain, CarsSlideshowHome, ChatBot, PlanAhorroHome, PostVentaHome } from "@/components";
 
 export default async function HomePage() {
 
@@ -28,6 +28,8 @@ export default async function HomePage() {
       <CarsSlideshowHome cars={cars} />
 
       <PostVentaHome />
+
+      <ChatBot />
 
 
 

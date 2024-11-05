@@ -20,7 +20,7 @@ type PropType = {
 const CarouselHero: React.FC<PropType> = () => {
   // const { slides, options } = props
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
-    Autoplay({ delay: 3000 })
+    Autoplay({ delay: 5000 })
   ])
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
@@ -65,7 +65,7 @@ const CarouselHero: React.FC<PropType> = () => {
           />
 
           <CarouselSlideItem
-            text="¿Listo para el cambio? Descubrí los planes de ahorro que tenemos para vos, y llévate tu próximo auto."
+            text="¿Listo para el cambio? Descubrí los planes de ahorro que tenemos para vos, y llevate tu próximo auto."
             id={2}
             btnHref="planes"
           />

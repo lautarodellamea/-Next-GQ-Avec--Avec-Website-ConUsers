@@ -22,7 +22,7 @@ export const AboutHome = () => {
             Nos mueve la pasión de transformar la experiencia automotriz.
           </p>
           <p>
-            Hace más de 15 años que conectamos con la historia de cada cliente. En Avec, concesionario del <strong>Grupo Quijada</strong>, tenemos la certeza de que cada viaje es único y especial. Nos enorgullece formar parte de una red que prioriza la satisfacción y la confianza, haciendo de cada experiencia un momento inolvidable.
+            Somos Avec, un concesionario de <strong>Grupo Quijada</strong> y hace más de 15 años que conectamos con la historia de cada cliente. Nos enorgullece formar parte de una red que prioriza la satisfacción y la confianza, haciendo de cada experiencia un momento inolvidable. Tenemos la certeza de que cada viaje es único y especial.
           </p>
           {/* <Link href="/nosotros"><Button variant="outline" className="bg-tranparent text-white mt-4" >Conócenos</Button></Link> */}
         </div>

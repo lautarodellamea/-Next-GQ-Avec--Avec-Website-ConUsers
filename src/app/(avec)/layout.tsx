@@ -3,7 +3,7 @@
 // import "../styles/home/brands-home.css";
 
 
-import { TopMenu, Footer, Locations, MapContainer, ChatBot, Toaster } from "@/components";
+import { TopMenu, Footer, Locations, MapContainer, Toaster } from "@/components";
 import { avecFont } from "@/config";
 
 
@@ -34,7 +34,7 @@ export default function RootLayout({
           <MapContainer />
         </div>
 
-        <ChatBot />
+
         <Footer />
 
         {/* Toaster: para notificar que se envio un formulario */}

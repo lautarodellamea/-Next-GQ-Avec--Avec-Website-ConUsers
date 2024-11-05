@@ -40,7 +40,7 @@ export const CarGridItemVentaDirecta = ({ car }: Props) => {
       </div>
 
       <FormCarPlan
-        titleForm={`Vehiculo ${car.brand.name === "citroen" ? "CITROËN" : car.brand.name.toUpperCase()} ${car.modelName.toUpperCase()}`}
+        titleForm={`Vehículo ${car.brand.name === "citroen" ? "CITROËN" : car.brand.name.toUpperCase()} ${car.modelName.toUpperCase()}`}
         serviceForm={`Venta directa: ${car.brand.name === "citroen" ? "CITROËN" : car.brand.name} ${car.modelName} ${car.modelVersion}`}
         isOpen={openForm === 'venta-directa'}
         setIsOpen={(value) => setOpenForm(value ? 'venta-directa' : null)}
