@@ -26,7 +26,6 @@ export const CardGridItem = ({ car }: Props) => {
           width={400}
           height={400}
 
-
           onMouseEnter={() => setDisplayImage(car.images?.[1] ?? 'default.jpg')}
           onMouseLeave={() => setDisplayImage(car.images?.[0] ?? 'default.jpg')}
         />

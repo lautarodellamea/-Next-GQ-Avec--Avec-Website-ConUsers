@@ -17,7 +17,7 @@ interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   title: "Avec Sitio Web Oficial",
-  url: "https://www.avec.com.ar",
+  url: "https://next-gq-avec-avec-website-no-users.vercel.app",
   siteName: "Avec",
   description: "Bienvenidos a Avec, Concesionario Oficial de Peugeot, Citroen, Fiat y DS. Conocé nuestros servicios: venta de 0km, Usados, Planes de Ahorro y PostVenta.",
   imgOpenGraph: "Opengraph_Avec__.webp",
