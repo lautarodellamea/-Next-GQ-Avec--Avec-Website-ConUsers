@@ -52,7 +52,7 @@ export const CarsPlanes = ({ searchParams }: Props) => {
         setCarsData({ cars, currentPage, totalPages });
       }
 
-      console.log(cars)
+      // console.log(cars)
       // console.log(totalPages)
 
       setLoading(false);

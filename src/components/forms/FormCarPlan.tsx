@@ -110,7 +110,7 @@ export function FormCarPlan({ titleForm, serviceForm, isOpen, setIsOpen }: Props
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log({ values })
+    // console.log({ values })
 
     // Limpia los espacios en blanco antes de enviar
     const cleanedValues = {
@@ -121,7 +121,7 @@ export function FormCarPlan({ titleForm, serviceForm, isOpen, setIsOpen }: Props
       service: values.service.trim()
     };
 
-    console.log({ cleanedValues });
+    // console.log({ cleanedValues });
 
     // Aquí puedes llamar a la función para enviar el correo usando los valores limpios
     // Por ejemplo: await sendEmail(cleanedValues);
@@ -141,7 +141,7 @@ export function FormCarPlan({ titleForm, serviceForm, isOpen, setIsOpen }: Props
       const result = await response.json();
 
       if (response.ok) {
-        console.log('¡Correo enviado exitosamente!', result);
+        // console.log('¡Correo enviado exitosamente!', result);
 
         toast({
           title: "Formulario enviado correctamente",

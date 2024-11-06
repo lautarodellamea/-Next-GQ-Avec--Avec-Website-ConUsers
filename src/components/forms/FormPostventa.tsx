@@ -135,7 +135,7 @@ export function FormPostventa({ titleForm, serviceForm, isOpen, setIsOpen }: Pro
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log({ values })
+    // console.log({ values })
 
     // Limpia los espacios en blanco antes de enviar
     const cleanedValues = {
@@ -148,7 +148,7 @@ export function FormPostventa({ titleForm, serviceForm, isOpen, setIsOpen }: Pro
       service: values.service.trim()
     };
 
-    console.log({ cleanedValues });
+    // console.log({ cleanedValues });
 
     // aca podemos llamar a la función para enviar el correo usando los valores limpios
     // Por ejemplo: await sendEmail(cleanedValues); *mas abajo lo hago*
@@ -168,7 +168,7 @@ export function FormPostventa({ titleForm, serviceForm, isOpen, setIsOpen }: Pro
       const result = await response.json();
 
       if (response.ok) {
-        console.log('FormService.tsx: ¡Correo enviado exitosamente!', result);
+        // console.log('FormService.tsx: ¡Correo enviado exitosamente!', result);
 
         /* toast que indica que el correo ha sido enviado */
         toast({
