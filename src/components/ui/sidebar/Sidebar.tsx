@@ -19,7 +19,7 @@ export const Sidebar = () => {
 
 
   return (
-    <div>
+    <div className="relative z-[750]">
 
       {/* Background black */}
       {

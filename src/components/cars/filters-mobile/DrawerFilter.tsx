@@ -41,10 +41,10 @@ export function DrawerFilter() {
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
-        <Button className="fixed bottom-0 w-full h-[60px] z-[100] bg-avecLightBlueColor text-white rounded-t-lg m-auto hover:bg-avecBlueColor">
+        <Button className="fixed bottom-0 w-full h-[60px] z-[100] border-t-2 border-avecBlueColor bg-black text-white rounded-t-lg m-auto hover:bg-avecBlueColor">
           <div className="flex flex-row gap-1 items-center justify-center">
-            <SlidersHorizontal className="h-5 " />
-            <span className="text-lg">Filtros</span>
+            <SlidersHorizontal className="h-5" />
+            <span className="text-lg font-bold">Filtros</span>
           </div>
         </Button>
       </DrawerTrigger>
@@ -53,11 +53,11 @@ export function DrawerFilter() {
           <DrawerHeader >
             <DrawerTitle><button
               onClick={handleReset}
-              className='text-avecLightBlueColor font-medium text-sm rounded hover:underline pl-2'
+              className='text-avecLightBlueColor text-center w-full font-medium text-sm rounded hover:underline pl-2'
             >
               Limpiar Filtros
             </button></DrawerTitle>
-            <DrawerDescription id="drawer-description">
+            <DrawerDescription className="text-center text-balance" id="drawer-description">
               Usa los filtros para refinar los resultados de búsqueda.
             </DrawerDescription>
           </DrawerHeader>
