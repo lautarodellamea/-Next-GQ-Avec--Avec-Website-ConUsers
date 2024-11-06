@@ -58,7 +58,7 @@ export const CardGridItemPlanes = ({ car }: Props) => {
 
 
       <FormCarPlan
-        titleForm={`Vehículo ${car.brand.name === "citroen" ? "citroën".toUpperCase() : car.brand.name} ${car.modelName.toUpperCase()}`}
+        titleForm={`Vehículo ${car.brand.name === "citroen" ? "citroën".toUpperCase() : car.brand.name.toUpperCase()} ${car.modelName.toUpperCase()}`}
         serviceForm={`Plan de ahorro: ${car.brand.name === "citroen" ? "citroën" : car.brand.name} ${car.modelName} ${car.modelVersion}`}
         isOpen={openForm === 'plan'}
         setIsOpen={(value) => setOpenForm(value ? 'plan' : null)}

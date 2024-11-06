@@ -108,7 +108,7 @@ export const CarInfo = ({ car }: Props) => {
 
 
       <FormCarUsado
-        titleForm={`Vehículo ${car.brand.name.toUpperCase()} ${car.modelName.toUpperCase()}`}
+        titleForm={`Vehículo ${car.brand.name === "citroen" ? "CITROËN" : car.brand.name.toUpperCase()} ${car.modelName.toUpperCase()}`}
         serviceForm={`Usados ${car.brand.name} ${car.modelName} ${car.modelVersion}`}
         isOpen={openForm === 'usado'}
         setIsOpen={(value) => setOpenForm(value ? 'usado' : null)}

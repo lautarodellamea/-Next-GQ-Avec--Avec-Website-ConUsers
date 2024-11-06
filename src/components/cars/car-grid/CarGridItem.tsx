@@ -36,7 +36,7 @@ export const CardGridItem = ({ car }: Props) => {
       <div className="relative flex flex-col sm:flex-col 2xl:flex-row  2xl:justify-between items-start  p-2 overflow-hidden ">
         <div className="flex flex-col md:px-2">
           <div className="flex flex-col sm:flex-row sm:gap-1">
-            <p className="text-sm sm:text-lg font-bold text-avecBlueColor truncate uppercase">{car.brand.name}</p>
+            <p className="text-sm sm:text-lg font-bold text-avecBlueColor truncate uppercase">{car.brand.name === "citroen" ? "CITROËN" : car.brand.name}</p>
             <p className="text-sm sm:text-lg font-bold text-avecBlueColor truncate uppercase"> {car.modelName}</p>
             <p className="text-[10px] sm:text-lg font-bold text-avecBlueColor truncate hidden sm:inline lg:hidden 2xl:inline"> - {car.year}</p>
           </div>
