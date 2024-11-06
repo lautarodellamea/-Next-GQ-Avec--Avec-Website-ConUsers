@@ -37,13 +37,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // };
 
   return {
-    title: car?.brand.name ?? "Producto no encontrado",
-    description: car?.description ?? "",
+    title: car ? `${car.brand.name.toUpperCase()} ${car.modelName.toUpperCase()} - ${car.year}` : "Auto no encontrado",
+    description: car
+      ? `Consulta nuestro ${car.brand.name} ${car.modelName} del ${car.year}, con transmisión ${car.transmission} y ${car.km} km. Ideal para quienes buscan un auto confiable y de calidad.`
+      : "El auto que estás buscando no existe.",
     openGraph: {
-      title: car?.brand.name ?? "Producto no encontrado",
-      description: car?.description ?? "",
+      title: car ? `${car.brand.name.toUpperCase()} ${car.modelName.toUpperCase()} - ${car.year}` : "Auto no encontrado",
+      description: car
+        ? `Consulta nuestro ${car.brand.name} ${car.modelName} del ${car.year}, con transmisión ${car.transmission} y ${car.km} km. Ideal para quienes buscan un auto confiable y de calidad.`
+        : "El auto que estás buscando no existe.",
       // images: [], // https://misitioweb.com/products/image.png
-      images: [`/images/usados/${car?.images[1]}`],
+      images: car?.images?.length ? [`/images/usados/${car.images[0]}`] : [],
     },
   };
 }

@@ -13,6 +13,7 @@ export default async function HomePage() {
     take: 12,
   });
 
+
   return (
     <div>
 
