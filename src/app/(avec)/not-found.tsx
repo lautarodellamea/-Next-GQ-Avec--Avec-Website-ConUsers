@@ -1,3 +1,6 @@
+
+// en produccion funciona bien la fuente
+
 import { avecFont } from '@/config'
 import Image from 'next/image'
 import Link from 'next/link'
