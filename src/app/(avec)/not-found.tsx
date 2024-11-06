@@ -14,7 +14,7 @@ export default function NotFound() {
       </div>
 
 
-      <Image width={1000} height={1000} className='xl:w-[800px]' src="/images/Error 404_imagen.webp" alt="" />
+      <Image width={1000} height={1000} className='xl:w-[800px]' src="/images/Error_404_imagen.webp" alt="" />
     </div>
   )
 }

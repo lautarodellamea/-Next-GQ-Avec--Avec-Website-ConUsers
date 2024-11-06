@@ -16,23 +16,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = params;
   const car = await getCarBySlug(slug);
 
-  if (!car) {
-    return {
-      title: "Coche no encontrado",
-      description: "El coche que estás buscando no existe.",
-    };
-  }
+  // if (!car) {
+  //   return {
+  //     title: "Coche no encontrado",
+  //     description: "El coche que estás buscando no existe.",
+  //   };
+  // }
+
+  // return {
+  //   title: `${car.brand.name.toUpperCase()} ${car.modelName.toUpperCase()} - ${car.year}`,
+  //   description: `Descubre más sobre el ${car.brand.name} ${car.modelName} del año ${car.year} con transmisión ${car.transmission} y un kilometraje de ${car.km} km.`,
+  //   openGraph: {
+  //     title: `${car.brand.name.toUpperCase()} ${car.modelName.toUpperCase()} - ${car.year}`,
+  //     description: `Descubre más sobre el ${car.brand.name} ${car.modelName} del año ${car.year}.`,
+  //     images: car.images.map((url) => ({
+  //       url,
+  //       alt: `${car.brand.name} ${car.modelName}`,
+  //     })),
+  //   },
+  // };
 
   return {
-    title: `${car.brand.name.toUpperCase()} ${car.modelName.toUpperCase()} - ${car.year}`,
-    description: `Descubre más sobre el ${car.brand.name} ${car.modelName} del año ${car.year} con transmisión ${car.transmission} y un kilometraje de ${car.km} km.`,
+    title: car?.brand.name ?? "Producto no encontrado",
+    description: car?.description ?? "",
     openGraph: {
-      title: `${car.brand.name.toUpperCase()} ${car.modelName.toUpperCase()} - ${car.year}`,
-      description: `Descubre más sobre el ${car.brand.name} ${car.modelName} del año ${car.year}.`,
-      images: car.images.map((url) => ({
-        url,
-        alt: `${car.brand.name} ${car.modelName}`,
-      })),
+      title: car?.brand.name ?? "Producto no encontrado",
+      description: car?.description ?? "",
+      // images: [], // https://misitioweb.com/products/image.png
+      images: [`/images/usados/${car?.images[1]}`],
     },
   };
 }
