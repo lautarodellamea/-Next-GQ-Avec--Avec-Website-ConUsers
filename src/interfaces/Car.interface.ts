@@ -27,8 +27,17 @@ export interface Car {
   currency: string; // pesos, dolares
 }
 
+
+export interface CarImage {
+  id: number;
+  url: string;
+  carId: string
+}
+
+
 export interface PaginatedCarResponse {
   currentPage: number;
   totalPages: number;
   cars: Car[];
 }
+

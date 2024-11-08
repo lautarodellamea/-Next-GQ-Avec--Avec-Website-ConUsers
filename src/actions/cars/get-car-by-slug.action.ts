@@ -10,7 +10,8 @@ export const getCarBySlug = async (slug: string) => {
       include: {
         CarImage: {
           select: {
-            url: true
+            url: true,
+            id: true
           }
         },
         brand: {

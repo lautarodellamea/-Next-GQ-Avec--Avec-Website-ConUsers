@@ -27,7 +27,6 @@ import {
 } from "@/components/ui/select"
 
 
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -35,6 +34,14 @@ import { Textarea } from "@/components/ui/textarea"
 import { ReloadIcon } from "@radix-ui/react-icons"
 import { useState } from "react"
 import { Checkbox } from "@/components"
+import { Car, CarImage, OnlyBrand } from "@/interfaces"
+import Image from "next/image"
+
+
+interface Props {
+  car: Car & { CarImage?: CarImage[] },
+  brands: OnlyBrand[],
+}
 
 
 const formSchema = z.object({
@@ -66,14 +73,16 @@ const formSchema = z.object({
       message: "El tipo de operación no puede contener solo espacios.",
     }),
 
-  brand: z
-    .string()
-    .min(1, {
-      message: "Por favor, seleccione una marca.",
-    })
-    .refine((value) => value.trim() !== "", {
-      message: "La marca no puede contener solo espacios.",
-    }),
+  brandId: z
+    .string(),
+  // brandId: z
+  //   .string()
+  //   .min(1, {
+  //     message: "Por favor, seleccione una marca.",
+  //   })
+  //   .refine((value) => value.trim() !== "", {
+  //     message: "La marca no puede contener solo espacios.",
+  //   }),
 
   modelName: z.string().min(2, {
     message: "Por favor, introduzca el nombre del modelo.",
@@ -202,7 +211,9 @@ const formSchema = z.object({
       message: "La consulta no puede contener solo espacios.",
     }),
 
-  images: z
+  images: z.array(z.string()),
+
+  /* images: z
     .custom<FileList>((value) => value instanceof FileList && value.length > 0, {
       message: "Por favor, suba al menos una imagen.",
     })
@@ -214,69 +225,52 @@ const formSchema = z.object({
       {
         message: "Solo se permiten archivos de imagen en formato PNG, JPEG o JPG.",
       }
-    ),
+    ), */
 
   inStock: z.boolean()
 })
 
-export const CarForm = () => {
+export const CarForm = ({ car, brands }: Props) => {
 
 
 
   const [loading, setLoading] = useState(false)
 
 
+  // console.log(brands)
+  // console.log(car)
 
   // 1. defino el formulario
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
 
-    // defaultValues: {
-    //   vin: "123ASD",
-    //   licensePlate: "AAA333",
-    //   operationType: "usado",
-    //   brand: "",
-    //   modelName: "",
-    //   modelVersion: "",
-    //   engine: "",
-    //   slug: "",
-    //   price: 0,
-    //   currency: "",
-    //   km: 0,
-    //   year: 0,
-    //   doors: 0,
-    //   fuelType: "",
-    //   bodyStyle: "",
-    //   transmission: "",
-    //   color: "",
-    //   location: "",
-    //   vehicleTier: "",
-    //   description: "",
-    //   inStock: false,
-    // },
     defaultValues: {
-      vin: "123ASD",
-      licensePlate: "AAA333",
-      operationType: "usado",
-      brand: "peugeot",
-      modelName: "3008",
-      modelVersion: "aa",
-      engine: "1.6",
-      slug: "asd_asd",
-      price: 1000,
-      currency: "ars",
-      // km: 1234,
-      // year: 2000,
-      // doors: 0,
-      fuelType: "nafta",
-      bodyStyle: "sedan",
-      transmission: "automatico",
-      color: "rojo",
-      location: "santa fe",
-      vehicleTier: "generico",
-      description: "-",
-      inStock: true,
-    }
+      ...car,
+
+    },
+    /*  defaultValues: {
+       vin: "123ASD",
+       licensePlate: "AAA333",
+       operationType: "usado",
+       brand: "peugeot",
+       modelName: "3008",
+       modelVersion: "aa",
+       engine: "1.6",
+       slug: "asd_asd",
+       price: 1000,
+       currency: "ars",
+       // km: 1234,
+       // year: 2000,
+       // doors: 0,
+       fuelType: "nafta",
+       bodyStyle: "sedan",
+       transmission: "automatico",
+       color: "rojo",
+       location: "santa fe",
+       vehicleTier: "generico",
+       description: "-",
+       inStock: true,
+     } */
 
   })
 
@@ -294,7 +288,7 @@ export const CarForm = () => {
       vin: values.vin.trim(),
       licensePlate: values.licensePlate.trim(),
       operationType: values.operationType.trim(),
-      brand: values.brand.trim(),
+      brandId: values.brandId,
       modelName: values.modelName.trim(),
       modelVersion: values.modelVersion.trim(),
       engine: values.engine.trim(),
@@ -313,6 +307,7 @@ export const CarForm = () => {
       description: values.description.trim(),
       images: values.images,
       inStock: values.inStock,
+
     };
 
     console.log({ cleanedValues });
@@ -407,16 +402,15 @@ export const CarForm = () => {
               {/* Marca */}
               <FormField
                 control={form.control}
-                name="brand"
+                name="brandId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Marca</FormLabel>
                     <FormControl>
                       <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
+                        onValueChange={(value) => field.onChange(value)}
+                        value={field.value || ""}
                         disabled={loading}
-
                       >
                         <SelectTrigger className={`w-full bg-avecGrayInputColor ${field.value ? 'text-black' : 'text-gray-500'}`}>
                           <SelectValue placeholder="Seleccione la marca" />
@@ -424,23 +418,9 @@ export const CarForm = () => {
                         <SelectContent>
                           <SelectGroup>
                             <SelectLabel>Marca</SelectLabel>
-                            <SelectItem value="peugeot">Peugeot</SelectItem>
-                            <SelectItem value="citroen">Citroën</SelectItem>
-                            <SelectItem value="ds">DS Automobiles</SelectItem>
-                            <SelectItem value="fiat">Fiat</SelectItem>
-                            <SelectItem value="ford">Ford</SelectItem>
-                            <SelectItem value="honda">Honda</SelectItem>
-                            <SelectItem value="hyundai">Hyundai</SelectItem>
-                            <SelectItem value="kia">Kia</SelectItem>
-                            <SelectItem value="nissan">Nissan</SelectItem>
-                            <SelectItem value="renault">Renault</SelectItem>
-                            <SelectItem value="toyota">Toyota</SelectItem>
-                            <SelectItem value="volkswagen">Volkswagen</SelectItem>
-                            <SelectItem value="volvo">Volvo</SelectItem>
-                            <SelectItem value="bmw">BMW</SelectItem>
-
-
-
+                            {brands.map((brand) => (
+                              <SelectItem key={brand.id} value={brand.id}>{brand.name}</SelectItem>
+                            ))}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -915,6 +895,25 @@ export const CarForm = () => {
           <img className="relative m-auto mt-10 mb-10 right-0 opacity-10" src="images/brands/brands.png" alt="logos" />
 
         </FormProvider>
+
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {
+            car.CarImage?.map(image => (
+              <div key={car.slug}>
+                <Image key={image.id}
+                  src={`/images/usados/${image.url}`}
+                  width={300}
+                  height={300}
+                  className="rounded shadow-md"
+                  alt={car.slug ?? ''}
+                />
+                <button>Eliminar</button>
+              </div>
+
+            ))
+          }
+        </div>
 
 
       </div >

@@ -2,6 +2,8 @@ import { getCarBySlug } from "@/actions/cars/get-car-by-slug.action";
 import { TitleHome } from "@/components";
 import { redirect } from "next/navigation";
 import { CarForm } from "./ui/CarForm";
+import { getBrands } from "@/actions/brands/get-brands";
+
 
 
 
@@ -17,7 +19,12 @@ export default async function CarAdminPage({ params }: Props) {
 
   const { slug } = params;
 
-  const car = await getCarBySlug(slug);
+
+  const [car, brands] = await Promise.all([
+    getCarBySlug(slug),
+    getBrands()
+  ]);
+
 
   if (!car) {
     redirect('/admin/cars')
@@ -30,7 +37,7 @@ export default async function CarAdminPage({ params }: Props) {
     <div className="top-separator">
 
       <TitleHome title={title} />
-      <CarForm car={car} />
+      <CarForm car={car} brands={brands} />
       <h1>{slug}</h1>
     </div>
   );
