@@ -36,6 +36,7 @@ import { useState } from "react"
 import { Checkbox } from "@/components"
 import { Car, CarImage, OnlyBrand } from "@/interfaces"
 import Image from "next/image"
+import { createUpdateCar } from "@/actions/cars/create-update-car"
 
 
 interface Props {
@@ -227,7 +228,7 @@ const formSchema = z.object({
       }
     ), */
 
-  inStock: z.boolean()
+  inStock: z.string()
 })
 
 export const CarForm = ({ car, brands }: Props) => {
@@ -280,37 +281,72 @@ export const CarForm = ({ car, brands }: Props) => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    // console.log({ values })
+
+
+    // // Limpia los espacios en blanco antes de enviar
+    // const cleanedValues = {
+    //   vin: values.vin.trim(),
+    //   licensePlate: values.licensePlate.trim(),
+    //   operationType: values.operationType.trim(),
+    //   brandId: values.brandId,
+    //   modelName: values.modelName.trim(),
+    //   modelVersion: values.modelVersion.trim(),
+    //   engine: values.engine.trim(),
+    //   slug: values.slug.trim(),
+    //   price: values.price,
+    //   currency: values.currency.trim(),
+    //   km: Number(values.km),
+    //   year: Number(values.year),
+    //   doors: Number(values.doors),
+    //   fuelType: values.fuelType.trim(),
+    //   bodyStyle: values.bodyStyle.trim(),
+    //   transmission: values.transmission.trim(),
+    //   color: values.color.trim(),
+    //   location: values.location.trim(),
+    //   vehicleTier: values.vehicleTier.trim(),
+    //   description: values.description.trim(),
+    //   images: values.images,
+    //   inStock: values.inStock,
+
+    // };
+
+    // console.log({ cleanedValues });
+
+
     console.log({ values })
 
+    const formData = new FormData()
 
-    // Limpia los espacios en blanco antes de enviar
-    const cleanedValues = {
-      vin: values.vin.trim(),
-      licensePlate: values.licensePlate.trim(),
-      operationType: values.operationType.trim(),
-      brandId: values.brandId,
-      modelName: values.modelName.trim(),
-      modelVersion: values.modelVersion.trim(),
-      engine: values.engine.trim(),
-      slug: values.slug.trim(),
-      price: values.price,
-      currency: values.currency.trim(),
-      km: Number(values.km),
-      year: Number(values.year),
-      doors: Number(values.doors),
-      fuelType: values.fuelType.trim(),
-      bodyStyle: values.bodyStyle.trim(),
-      transmission: values.transmission.trim(),
-      color: values.color.trim(),
-      location: values.location.trim(),
-      vehicleTier: values.vehicleTier.trim(),
-      description: values.description.trim(),
-      images: values.images,
-      inStock: values.inStock,
+    const { ...carToSave } = values
 
-    };
+    formData.append('id', car.id ?? '');
+    formData.append('vin', carToSave.vin);
+    formData.append('licensePlate', carToSave.licensePlate);
+    formData.append('operationType', carToSave.operationType);
+    formData.append('brandId', carToSave.brandId);
+    formData.append('modelName', carToSave.modelName);
+    formData.append('modelVersion', carToSave.modelVersion);
+    formData.append('engine', carToSave.engine);
+    formData.append('slug', carToSave.slug);
+    formData.append('price', carToSave.price.toString());
+    formData.append('inStock', carToSave.inStock.toString());
+    formData.append('currency', carToSave.currency);
+    formData.append('km', carToSave.km.toString());
+    formData.append('year', carToSave.year.toString());
+    formData.append('doors', carToSave.doors.toString());
+    formData.append('fuelType', carToSave.fuelType);
+    formData.append('bodyStyle', carToSave.bodyStyle);
+    formData.append('transmission', carToSave.transmission);
+    formData.append('color', carToSave.color);
+    formData.append('location', carToSave.location);
+    formData.append('vehicleTier', carToSave.vehicleTier);
+    formData.append('description', carToSave.description);
 
-    console.log({ cleanedValues });
+    const { ok } = await createUpdateCar(formData)
+
+    console.log({ ok })
+
 
 
     setLoading(true);
@@ -825,7 +861,11 @@ export const CarForm = ({ car, brands }: Props) => {
                   <FormItem className="flex flex-row  gap-3">
                     <FormLabel className="mt-2">En stock</FormLabel>
                     <FormControl>
-                      <Checkbox disabled={loading} {...field} onCheckedChange={field.onChange} />
+                      <Checkbox
+                        disabled={loading}
+                        {...field}
+                        onCheckedChange={(checked) => field.onChange(checked ? "true" : "false")}
+                      />
                     </FormControl>
 
                     <FormMessage />
@@ -864,16 +904,6 @@ export const CarForm = ({ car, brands }: Props) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
             {/* Submit */}
             {
               loading ? (
@@ -900,15 +930,19 @@ export const CarForm = ({ car, brands }: Props) => {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {
             car.CarImage?.map(image => (
-              <div key={car.slug}>
+              <div key={image.id}>
                 <Image key={image.id}
                   src={`/images/usados/${image.url}`}
                   width={300}
                   height={300}
-                  className="rounded shadow-md"
+                  className="rounded-t shadow-md"
                   alt={car.slug ?? ''}
                 />
-                <button>Eliminar</button>
+                <button
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 w-full rounded-b-xl"
+                  type="button"
+                  onClick={() => { console.log(image.id, image.url) }}
+                >Eliminar</button>
               </div>
 
             ))
