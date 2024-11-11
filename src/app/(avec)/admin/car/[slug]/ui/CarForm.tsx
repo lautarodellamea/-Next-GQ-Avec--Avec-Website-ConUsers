@@ -37,10 +37,11 @@ import { Checkbox } from "@/components"
 import { Car, CarImage, OnlyBrand } from "@/interfaces"
 import Image from "next/image"
 import { createUpdateCar } from "@/actions/cars/create-update-car"
+import { useRouter } from "next/navigation"
 
 
 interface Props {
-  car: Car & { CarImage?: CarImage[] },
+  car: Partial<Car> & { CarImage?: CarImage[] },
   brands: OnlyBrand[],
 }
 
@@ -212,7 +213,7 @@ const formSchema = z.object({
       message: "La consulta no puede contener solo espacios.",
     }),
 
-  images: z.array(z.string()),
+  // images: z.array(z.string()),
 
   /* images: z
     .custom<FileList>((value) => value instanceof FileList && value.length > 0, {
@@ -228,12 +229,12 @@ const formSchema = z.object({
       }
     ), */
 
-  inStock: z.string()
+  inStock: z.string().optional(),
 })
 
 export const CarForm = ({ car, brands }: Props) => {
 
-
+  const router = useRouter()
 
   const [loading, setLoading] = useState(false)
 
@@ -245,33 +246,33 @@ export const CarForm = ({ car, brands }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
 
-    defaultValues: {
-      ...car,
-
-    },
     /*  defaultValues: {
-       vin: "123ASD",
-       licensePlate: "AAA333",
-       operationType: "usado",
-       brand: "peugeot",
-       modelName: "3008",
-       modelVersion: "aa",
-       engine: "1.6",
-       slug: "asd_asd",
-       price: 1000,
-       currency: "ars",
-       // km: 1234,
-       // year: 2000,
-       // doors: 0,
-       fuelType: "nafta",
-       bodyStyle: "sedan",
-       transmission: "automatico",
-       color: "rojo",
-       location: "santa fe",
-       vehicleTier: "generico",
-       description: "-",
-       inStock: true,
-     } */
+       ...car,
+ 
+     }, */
+    defaultValues: {
+      vin: "123ASD",
+      licensePlate: "AAA333",
+      operationType: "usado",
+      brandId: "014973d1-3869-4d2b-b52f-c5b9c0c7c1bd",
+      modelName: "3008",
+      modelVersion: "aa",
+      engine: "1.6",
+      slug: "asd_asd",
+      price: 1000,
+      currency: "ars",
+      // km: 1234,
+      // year: 2000,
+      // doors: 0,
+      fuelType: "nafta",
+      bodyStyle: "sedan",
+      transmission: "automatico",
+      color: "rojo",
+      location: "santa fe",
+      vehicleTier: "generico",
+      description: "-",
+      inStock: "true",
+    }
 
   })
 
@@ -320,7 +321,10 @@ export const CarForm = ({ car, brands }: Props) => {
 
     const { ...carToSave } = values
 
-    formData.append('id', car.id ?? '');
+    if (car.id) {
+      formData.append('id', car.id)
+    }
+    // formData.append('id', car.id ?? '');
     formData.append('vin', carToSave.vin);
     formData.append('licensePlate', carToSave.licensePlate);
     formData.append('operationType', carToSave.operationType);
@@ -343,11 +347,16 @@ export const CarForm = ({ car, brands }: Props) => {
     formData.append('vehicleTier', carToSave.vehicleTier);
     formData.append('description', carToSave.description);
 
-    const { ok } = await createUpdateCar(formData)
+    const { ok, car: updatedCar } = await createUpdateCar(formData)
 
     console.log({ ok })
 
+    if (!ok) {
+      alert('No se pudo actualizar el vehículo')
+      return
+    }
 
+    router.replace(`/admin/car/${updatedCar?.slug}`)
 
     setLoading(true);
 

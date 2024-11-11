@@ -8,12 +8,7 @@ export const getCarBySlug = async (slug: string) => {
 
     const car = await prisma.car.findFirst({
       include: {
-        CarImage: {
-          select: {
-            url: true,
-            id: true
-          }
-        },
+        CarImage: true,
         brand: {
           select: {
             name: true

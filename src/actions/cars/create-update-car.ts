@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { Car } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 
@@ -71,40 +72,69 @@ export const createUpdateCar = async (formData: FormData) => {
   car.slug = car.slug.toLowerCase().replace(/ /g, '-').trim()
 
   const { id, ...rest } = car
-  // haremos una prisma transaction, en caso de dar error hace un rollback
-  const prismaTx = await prisma.$transaction(
-    async (tx) => {
 
-      let product: Car
+  try {
+    // haremos una prisma transaction, en caso de dar error hace un rollback
+    const prismaTx = await prisma.$transaction(
+      async (tx) => {
+
+        let car: Car
 
 
 
 
-      if (id) {
-        // actualizar
-        product = await prisma.car.update({
-          where: { id },
-          data: {
-            ...rest,
-            inStock: rest.inStock === "true" ? 1 : 0,
-          }
-        })
-        console.log({ updatedProduct: product })
+        if (id) {
+          // actualizar
+          car = await prisma.car.update({
+            where: { id },
+            data: {
+              ...rest,
+              inStock: rest.inStock === "true" ? 1 : 0,
+            }
+          })
+          console.log({ updatedProduct: car })
 
-      } else {
-        // crear
+        } else {
+          // crear
+          car = await prisma.car.create({
+            data: {
+              ...rest,
+              inStock: rest.inStock === "true" ? 1 : 0,
+            }
+          })
+
+
+
+        }
+
+        console.log({ createdCar: car })
+
+
+        return {
+          car
+        }
       }
+    )
 
 
+    // una vez actualizado o creado el producto actualizamos las rutas donde aparece
+    revalidatePath('/admin/cars')
+    revalidatePath(`/admin/cars/${car.slug}`)
+    revalidatePath(`/cars/${car.slug}`)
 
 
-
-      return {
-
-      }
+    return {
+      ok: true,
+      car: prismaTx.car
     }
-  )
 
+  } catch (error) {
+    console.log(error)
+    return {
+      ok: false,
+      message: 'Error al crear o actualizar el auto'
+    }
+  }
 
   return {
     ok: true

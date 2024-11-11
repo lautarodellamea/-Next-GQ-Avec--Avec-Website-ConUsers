@@ -109,10 +109,14 @@ export const getPaginatedCarWithImages = async ({
     const totalCounter = await prisma.car.count({ where: whereClause });
     const totalPages = Math.ceil(totalCounter / Number(validTake));
 
+
+
+
     return {
       currentPage: validPage,
       totalPages: totalPages,
       cars: cars.map(car => ({
+        images: car.CarImage.map(image => image.url),
         vin: car.vin,
         licensePlate: car.licensePlate,
         operationType: car.operationType,
@@ -128,13 +132,14 @@ export const getPaginatedCarWithImages = async ({
         location: car.location,
         engine: car.engine,
         description: car.description,
-        images: car.CarImage.map(image => image.url),
         inStock: car.inStock,
         slug: car.slug,
         bodyStyle: car.bodyStyle,
         doors: car.doors,
         currency: car.currency,
+
       })),
+
     };
 
   } catch (error) {

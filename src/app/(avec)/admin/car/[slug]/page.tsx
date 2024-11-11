@@ -26,7 +26,7 @@ export default async function CarAdminPage({ params }: Props) {
   ]);
 
 
-  if (!car) {
+  if (!car && slug !== "new") {
     redirect('/admin/cars')
   }
 
@@ -37,7 +37,7 @@ export default async function CarAdminPage({ params }: Props) {
     <div className="top-separator">
 
       <TitleHome title={title} />
-      <CarForm car={car} brands={brands} />
+      <CarForm car={car ?? {}} brands={brands} />
       <h1>{slug}</h1>
     </div>
   );

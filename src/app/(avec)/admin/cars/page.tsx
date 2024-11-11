@@ -2,12 +2,11 @@ export const revalidate = 0;
 
 // https://tailwindcomponents.com/component/hoverable-table
 
-import { Pagination } from "@/components";
+import { CarImage, Pagination } from "@/components";
 
 import Link from "next/link";
 
 import { getPaginatedCarWithImages } from "@/actions/cars/car-pagination.action";
-import Image from "next/image";
 
 interface Props {
   searchParams: {
@@ -18,7 +17,7 @@ interface Props {
 export default async function CarsAdminPage({ searchParams }: Props) {
   const page = searchParams.page ? parseInt(searchParams.page) : 1;
 
-  const { cars, currentPage, totalPages } =
+  const { cars, totalPages } =
     await getPaginatedCarWithImages({ page });
 
   return (
@@ -26,7 +25,7 @@ export default async function CarsAdminPage({ searchParams }: Props) {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-4xl font-bold ">Mantenimiento de Autos</h1>
         <div className="bg-avecLightBlueColor text-white px-4 py-2 font-semibold cursor-pointer hover:bg-avecBlueColor transition-all">
-          <Link href="/admin/product/new" className="btn-primary">
+          <Link href="/admin/car/new" className="btn-primary">
             Cargar Auto
           </Link>
         </div>
@@ -82,8 +81,8 @@ export default async function CarsAdminPage({ searchParams }: Props) {
               >
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                   <Link href={`/car/${car.slug}`}>
-                    <Image
-                      src={`/images/usados/${car.images?.[0] ?? "default.jpg"}`}
+                    <CarImage
+                      src={car.images[0]}
                       width={80}
                       height={80}
                       alt={car.slug}
