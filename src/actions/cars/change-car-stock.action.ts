@@ -3,12 +3,9 @@
 
 import { auth } from "@/auth.config";
 import prisma from "@/lib/prisma";
-import { Role } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
-const validRoles: Role[] = ['admin', 'user', 'banned'];
-
-export const changeUserRole = async (userId: string, role: string) => {
+export const changeCarStock = async (carId: string, inStock: string) => {
 
 
   const session = await auth();
@@ -25,27 +22,21 @@ export const changeUserRole = async (userId: string, role: string) => {
 
   try {
 
-    if (!validRoles.includes(role as Role)) {
-      throw new Error('El rol proporcionado no es válido');
-    }
+    const newRole = inStock === "1" ? '1' : '0'
 
-    const newRole: Role = role as Role;
-
-    // const newRole = role === 'admin' ? 'admin' : 'user'
-
-    const user = await prisma.user.update({
+    const car = await prisma.car.update({
 
       where: {
-        id: userId
+        id: carId
       },
       data: {
-        role: newRole
+        inStock: Number(newRole)
       }
 
     })
 
     // revalidamos el path para que se vena los cambio
-    revalidatePath('/admin/users')
+    revalidatePath('/admin/cars')
 
     return {
       ok: true,
@@ -55,7 +46,7 @@ export const changeUserRole = async (userId: string, role: string) => {
   } catch (error) {
     return {
       ok: false,
-      message: "No se pudo actualizar, revisar logs"
+      message: "No se pudo actualizar, revisar logs," + error
     }
   }
 

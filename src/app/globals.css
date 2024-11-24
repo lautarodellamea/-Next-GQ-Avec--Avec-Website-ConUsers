@@ -90,3 +90,8 @@ body {
   @apply text-2xl font-bold sm:text-3xl text-avecBlueColorDark
 }
 
+input:disabled, select:disabled {
+  background-color: #e5e7eb; /* Cambia el color de fondo */
+  cursor: not-allowed; /* Muestra el cursor de "no permitido" */
+  opacity: 0.6; /* Opcional: Reduce la opacidad */
+}

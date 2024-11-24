@@ -4,6 +4,7 @@ export interface Brand {
 
 export interface Car {
   id?: string;
+  brandId?: string;
   vin: string;
   licensePlate: string;
   operationType: 'usado' | 'nuevo' | 'plan' | string;

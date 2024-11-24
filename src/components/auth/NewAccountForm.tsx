@@ -177,13 +177,16 @@ export const NewAccountForm = () => {
           </p>
         </div> */}
 
+        <div className="max-w-[400px] sm:w-[400px] ">
+          <h1 className="mb-4 text-3xl font-semibold">Crear Cuenta</h1>
+          {/* <p className="mb-4 text-slate-500">Inicia sesion para acceder a tu cuenta</p> */}
+        </div>
+
 
         <FormProvider {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 
-            <div className="grid grid-cols-1 gap-4 w-[600px]">
-
-
+            <div className="grid grid-cols-1 gap-4 w-[400px]">
 
               {/* Name */}
               <FormField
@@ -191,7 +194,7 @@ export const NewAccountForm = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nombre</FormLabel>
+                    {/* <FormLabel>Nombre</FormLabel> */}
                     <FormControl>
                       <Input className="bg-avecGrayInputColor" type=" text" placeholder="Introduce tu nombre" disabled={loading} {...field} />
                     </FormControl>
@@ -206,7 +209,7 @@ export const NewAccountForm = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    {/* <FormLabel>Email</FormLabel> */}
                     <FormControl>
                       <Input className="bg-avecGrayInputColor" type=" email" placeholder="Introduce tu correo" disabled={loading} {...field} />
                     </FormControl>
@@ -221,7 +224,7 @@ export const NewAccountForm = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Contraseña</FormLabel>
+                    {/* <FormLabel>Contraseña</FormLabel> */}
                     <FormControl>
                       <Input className="bg-avecGrayInputColor" type="password" placeholder="Introduce tu contraseña" disabled={loading} {...field} />
                     </FormControl>

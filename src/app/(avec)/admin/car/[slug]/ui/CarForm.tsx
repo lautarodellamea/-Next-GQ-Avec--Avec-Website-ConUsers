@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import { FormProvider, useForm } from "react-hook-form"
 import { z } from "zod"
@@ -32,22 +31,25 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 
 import { ReloadIcon } from "@radix-ui/react-icons"
-import { useState } from "react"
-import { Checkbox } from "@/components"
-import { Car, CarImage, OnlyBrand } from "@/interfaces"
-import Image from "next/image"
+import { useEffect, useState } from "react"
+import { CarImage, Checkbox } from "@/components"
+import { Car, CarImage as CarWithImage, OnlyBrand } from "@/interfaces"
 import { createUpdateCar } from "@/actions/cars/create-update-car"
 import { useRouter } from "next/navigation"
-
+import { deleteCarImage } from "@/actions/cars/delete-car.image.action"
+import { CarImageForm } from "./CarImageForm"
+import { CarImageFormContainer } from './CarImageFormContainer';
 
 interface Props {
-  car: Partial<Car> & { CarImage?: CarImage[] },
+  car: Partial<Car> & { CarImage?: CarWithImage[] },
   brands: OnlyBrand[],
+  isNewCar: string
 }
 
 
 const formSchema = z.object({
 
+  /* VIN */
   vin: z.string().min(2, {
     message: "Por favor, introduzca el VIN.",
   }).max(50, {
@@ -56,6 +58,7 @@ const formSchema = z.object({
     message: "El VIN no puede contener solo espacios.",
   }),
 
+  /* PATENTE */
   licensePlate: z.string().min(2, {
     message: "Por favor, introduzca la patente/dominio.",
   }).max(50, {
@@ -66,6 +69,7 @@ const formSchema = z.object({
     message: "La patente debe tener el formato AAA333 o AA333AA (SOLO LETRAS MAYUSCULAS).", /* AAA333, AA333AA */
   }),
 
+  /* TIPO DE OPERACIÓN */
   operationType: z
     .string()
     .min(1, {
@@ -75,6 +79,8 @@ const formSchema = z.object({
       message: "El tipo de operación no puede contener solo espacios.",
     }),
 
+
+  /* MARCA */
   brandId: z
     .string(),
   // brandId: z
@@ -86,6 +92,8 @@ const formSchema = z.object({
   //     message: "La marca no puede contener solo espacios.",
   //   }),
 
+
+  /* NOMBRE DEL MODELO */
   modelName: z.string().min(2, {
     message: "Por favor, introduzca el nombre del modelo.",
   }).max(50, {
@@ -94,6 +102,7 @@ const formSchema = z.object({
     message: "El nombre del modelo no puede contener solo espacios.",
   }),
 
+  /* VERSION DEL MODELO */
   modelVersion: z.string().min(2, {
     message: "Por favor, introduzca la version del modelo.",
   }).max(50, {
@@ -102,6 +111,7 @@ const formSchema = z.object({
     message: "La version del modelo no puede contener solo espacios.",
   }),
 
+  /* MOTOR */
   engine: z.string().min(2, {
     message: "Por favor, introduzca el motor.",
   }).max(50, {
@@ -110,18 +120,21 @@ const formSchema = z.object({
     message: "El valor del motor no puede contener solo espacios.",
   }),
 
+  /* SLUG */
   slug: z.string().min(2, {
     message: "Por favor, introduzca el slug.",
   }).max(50, {
     message: "Por favor, introduzca una slug más corta.",
   }).refine((value) => value.trim() !== "", {
     message: "El slug no puede contener solo espacios.",
-  }),
+  }).optional(),
 
+  /* PRECIO */
   price: z.number().min(2, {
     message: "Por favor, introduzca el precio.",
   }),
 
+  /* MONEDA */
   currency: z
     .string()
     .min(1, {
@@ -131,22 +144,26 @@ const formSchema = z.object({
       message: "El tipo de moneda no puede contener solo espacios.",
     }),
 
+  /* KILOMETRAJE */
   km: z.number({
     required_error: "Por favor, introduzca el kilometraje.",
   })
     .nonnegative({ message: "La cantidad de km no puede ser negativa." }),
 
+  /* AÑO */
   year: z.number({
     required_error: "Por favor, introduzca el año.",
   })
     .min(1800, { message: "El año no puede ser menor a 1800." })
     .max(new Date().getFullYear(), { message: `El año no puede ser mayor al año actual.` }),
 
+  /* PUERTAS */
   doors: z.number({
     required_error: "Por favor, introduzca la cantidad de puertas.",
   })
     .nonnegative({ message: "La cantidad de puertas no puede ser negativa." }),
 
+  /* COMBUSTIBLE */
   fuelType: z
     .string()
     .min(1, {
@@ -156,6 +173,7 @@ const formSchema = z.object({
       message: "El tipo de combustible no puede contener solo espacios.",
     }),
 
+  /* SEGMENTO */
   bodyStyle: z
     .string()
     .min(1, {
@@ -165,6 +183,7 @@ const formSchema = z.object({
       message: "El tipo de carrocería no puede contener solo espacios.",
     }),
 
+  /* TRANSMISION */
   transmission: z
     .string()
     .min(1, {
@@ -174,6 +193,7 @@ const formSchema = z.object({
       message: "El tipo de transmisión no puede contener solo espacios.",
     }),
 
+  /* COLOR */
   color: z
     .string()
     .min(1, {
@@ -183,6 +203,7 @@ const formSchema = z.object({
       message: "El color no puede contener solo espacios.",
     }),
 
+  /* SUCURSAL */
   location: z
     .string()
     .min(1, {
@@ -192,6 +213,7 @@ const formSchema = z.object({
       message: "La sucursal no puede contener solo espacios.",
     }),
 
+  /* TIER DEL VEHICULO */
   vehicleTier: z
     .string()
     .min(1, {
@@ -201,6 +223,7 @@ const formSchema = z.object({
       message: "El tier del vehículo no puede contener solo espacios.",
     }),
 
+  /* DESCRIPCIÓN */
   description: z
     .string()
     .min(1, {
@@ -211,33 +234,17 @@ const formSchema = z.object({
     })
     .refine((value) => value.trim() !== "", {
       message: "La consulta no puede contener solo espacios.",
-    }),
+    }).nullable().optional(),
 
-  // images: z.array(z.string()),
+  images: z.any(),
 
-  /* images: z
-    .custom<FileList>((value) => value instanceof FileList && value.length > 0, {
-      message: "Por favor, suba al menos una imagen.",
-    })
-    .refine(
-      (files) =>
-        Array.from(files).every((file) =>
-          ["image/png", "image/jpeg", "image/jpg"].includes(file.type)
-        ),
-      {
-        message: "Solo se permiten archivos de imagen en formato PNG, JPEG o JPG.",
-      }
-    ), */
-
-  inStock: z.string().optional(),
 })
 
-export const CarForm = ({ car, brands }: Props) => {
+export const CarForm = ({ car, brands, isNewCar }: Props) => {
 
   const router = useRouter()
 
   const [loading, setLoading] = useState(false)
-
 
   // console.log(brands)
   // console.log(car)
@@ -246,42 +253,54 @@ export const CarForm = ({ car, brands }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
 
-    /*  defaultValues: {
-       ...car,
- 
-     }, */
     defaultValues: {
-      vin: "123ASD",
-      licensePlate: "AAA333",
-      operationType: "usado",
-      brandId: "014973d1-3869-4d2b-b52f-c5b9c0c7c1bd",
-      modelName: "3008",
-      modelVersion: "aa",
-      engine: "1.6",
-      slug: "asd_asd",
-      price: 1000,
-      currency: "ars",
-      // km: 1234,
-      // year: 2000,
-      // doors: 0,
-      fuelType: "nafta",
-      bodyStyle: "sedan",
-      transmission: "automatico",
-      color: "rojo",
-      location: "santa fe",
-      vehicleTier: "generico",
-      description: "-",
-      inStock: "true",
-    }
+      ...car,
+
+    },
+    /*  defaultValues: {
+       vin: "123ASD",
+       licensePlate: "AAA333",
+       operationType: "usado",
+       brandId: "014973d1-3869-4d2b-b52f-c5b9c0c7c1bd",
+       modelName: "3008",
+       modelVersion: "aa",
+       engine: "1.6",
+       slug: "asd_asd",
+       price: 1000,
+       currency: "ars",
+       // km: 1234,
+       // year: 2000,
+       // doors: 0,
+       fuelType: "nafta",
+       bodyStyle: "sedan",
+       transmission: "automatico",
+       color: "rojo",
+       location: "santa fe",
+       vehicleTier: "generico",
+       description: "-",
+       inStock: "true",
+ 
+       images: undefined
+     } */
 
   })
+
+  // Genera el slug dinámicamente solo si el auto es nuevo
+  useEffect(() => {
+    if (isNewCar === "isNew") {
+      const brandName = brands.find((brand) => brand.id === car.brandId)?.name || "";
+      const generatedSlug = `${brandName}-${car.modelName}-${car.modelVersion}-${car.year}-${car.km}`
+        .toLowerCase()
+        .replace(/\s+/g, "-");
+      form.setValue("slug", generatedSlug);
+    }
+  }, [isNewCar, car, brands, form]);
 
   // console.log(form.getValues())
 
   // 2. defino el handler submit
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+
     // console.log({ values })
 
 
@@ -309,21 +328,31 @@ export const CarForm = ({ car, brands }: Props) => {
     //   description: values.description.trim(),
     //   images: values.images,
     //   inStock: values.inStock,
-
     // };
 
     // console.log({ cleanedValues });
-
+    setLoading(true);
 
     console.log({ values })
 
     const formData = new FormData()
 
-    const { ...carToSave } = values
+    const { images, ...carToSave } = values
+
+
+
 
     if (car.id) {
       formData.append('id', car.id)
     }
+    if (isNewCar === "isNew") {
+      formData.append('inStock', 'true')
+    } else {
+      formData.append('inStock', 'false')
+    }
+
+    const formattedDescription = carToSave.description?.trim() === "" ? null : carToSave.description?.trim();
+    formData.append("description", formattedDescription ?? "");
     // formData.append('id', car.id ?? '');
     formData.append('vin', carToSave.vin);
     formData.append('licensePlate', carToSave.licensePlate);
@@ -334,7 +363,7 @@ export const CarForm = ({ car, brands }: Props) => {
     formData.append('engine', carToSave.engine);
     formData.append('slug', carToSave.slug);
     formData.append('price', carToSave.price.toString());
-    formData.append('inStock', carToSave.inStock.toString());
+    // formData.append('inStock', carToSave.inStock.toString());
     formData.append('currency', carToSave.currency);
     formData.append('km', carToSave.km.toString());
     formData.append('year', carToSave.year.toString());
@@ -345,28 +374,54 @@ export const CarForm = ({ car, brands }: Props) => {
     formData.append('color', carToSave.color);
     formData.append('location', carToSave.location);
     formData.append('vehicleTier', carToSave.vehicleTier);
-    formData.append('description', carToSave.description);
+    // formData.append('description', carToSave.description);
+
+    console.log(images)
+    if (images) {
+      for (let i = 0; i < images.length; i++) {
+        formData.append('images', images[i]);
+      }
+    }
+    console.log(formData)
+
+    // console.log({ formData })
 
     const { ok, car: updatedCar } = await createUpdateCar(formData)
+
 
     console.log({ ok })
 
     if (!ok) {
       alert('No se pudo actualizar el vehículo')
+      setLoading(false);
       return
     }
 
-    router.replace(`/admin/car/${updatedCar?.slug}`)
+    // router.replace(`/admin/car/${updatedCar?.slug}`)
 
-    setLoading(true);
-
-
-
-
+    setLoading(false);
 
     // console.log("¡Formulario enviado!")
-    // form.reset()
+    form.reset()
   }
+
+  useEffect(() => {
+    if (isNewCar === "isNew") {
+      const brandName = brands.find((brand) => brand.id === form.watch("brandId"))?.name || "";
+      const modelName = form.watch("modelName") || "";
+      const modelVersion = form.watch("modelVersion") || "";
+      const year = form.watch("year") || "";
+      const km = form.watch("km") || "";
+
+      if (brandName && modelName && modelVersion && year && km) {
+        const generatedSlug = `${brandName}-${modelName}-${modelVersion}-${year}-${km}`
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[^\w-]/g, "");
+        form.setValue("slug", generatedSlug);
+      }
+    }
+  }, [isNewCar, brands, form.watch("brandId"), form.watch("modelName"), form.watch("modelVersion"), form.watch("year"), form.watch("km"), form]);
 
 
   return (
@@ -424,7 +479,6 @@ export const CarForm = ({ car, brands }: Props) => {
                         onValueChange={field.onChange}
                         value={field.value}
                         disabled={loading}
-
                       >
                         <SelectTrigger className={`w-full bg-avecGrayInputColor ${field.value ? 'text-black' : 'text-gray-500'}`}>
                           <SelectValue placeholder="Tipo de operación" />
@@ -522,20 +576,26 @@ export const CarForm = ({ car, brands }: Props) => {
               />
 
               {/* Slug */}
-              <FormField
-                control={form.control}
-                name="slug"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Slug</FormLabel>
-                    <FormControl >
-                      <Input className="bg-avecGrayInputColor focus-visible:ring-gray-400" placeholder="Ingrese el slug" disabled={loading} {...field} />
-                    </FormControl>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {isNewCar !== "isNew" && (
+                <FormField
+                  control={form.control}
+                  name="slug"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Slug</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="bg-avecGrayInputColor focus-visible:ring-gray-400"
+                          placeholder="Ingrese el slug"
+                          disabled={loading}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
 
               {/* Precio */}
               <FormField
@@ -863,7 +923,7 @@ export const CarForm = ({ car, brands }: Props) => {
               />
 
               {/* Stock */}
-              <FormField
+              {/*  <FormField
                 control={form.control}
                 name="inStock"
                 render={({ field }) => (
@@ -880,7 +940,7 @@ export const CarForm = ({ car, brands }: Props) => {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
 
 
               {/* Imagenes */}
@@ -895,7 +955,7 @@ export const CarForm = ({ car, brands }: Props) => {
                         className="bg-avecGrayInputColor"
                         type="file"
                         multiple
-                        accept="image/png, image/jpeg, image/jpg"
+                        accept="image/png, image/jpeg, image/jpg, image/avif, image/webp"
                         disabled={loading}
                         onChange={(e) => field.onChange(e.target.files)} // Captura el FileList de archivos
                       // Configura el valor a `undefined` para evitar errores en la gestión del valor de archivos
@@ -918,10 +978,12 @@ export const CarForm = ({ car, brands }: Props) => {
               loading ? (
                 <Button disabled>
                   <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                  Cargar
+                  {isNewCar === "isNew" ? "Cargando..." : "Actualizando..."}
                 </Button>
               ) : (
-                <Button variant="avecBtnPrimary" type="submit">Cargar</Button>
+                <Button variant="avecBtnPrimary" type="submit">
+                  {isNewCar === "isNew" ? "Cargar vehículo" : "Actualizar vehículo"}
+                </Button>
               )
             }
 
@@ -930,27 +992,26 @@ export const CarForm = ({ car, brands }: Props) => {
 
           </form>
 
-          {/* <BrandForm /> */}
-          <img className="relative m-auto mt-10 mb-10 right-0 opacity-10" src="images/brands/brands.png" alt="logos" />
-
         </FormProvider>
 
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+
+        {/* <CarImageFormContainer car={car} /> */}
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-3 mt-6">
           {
             car.CarImage?.map(image => (
-              <div key={image.id}>
-                <Image key={image.id}
-                  src={`/images/usados/${image.url}`}
+              <div key={image.id} className="w-full">
+                <CarImage key={image.id}
+                  src={image.url}
                   width={300}
                   height={300}
-                  className="rounded-t shadow-md"
+                  className="rounded-t shadow-md object-cover"
                   alt={car.slug ?? ''}
                 />
                 <button
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 w-full rounded-b-xl"
                   type="button"
-                  onClick={() => { console.log(image.id, image.url) }}
+                  onClick={() => deleteCarImage(image.id, image.url)}
                 >Eliminar</button>
               </div>
 
@@ -967,3 +1028,26 @@ export const CarForm = ({ car, brands }: Props) => {
     </>
   )
 }
+
+
+{/* <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+          {
+            car.CarImage?.map(image => (
+              <div key={image.id} className="w-full">
+                <CarImage key={image.id}
+                  src={image.url}
+                  width={300}
+                  height={300}
+                  className="rounded-t shadow-md object-cover"
+                  alt={car.slug ?? ''}
+                />
+                <button
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 w-full rounded-b-xl"
+                  type="button"
+                  onClick={() => deleteCarImage(image.id, image.url)}
+                >Eliminar</button>
+              </div>
+
+            ))
+          }
+        </div> */}

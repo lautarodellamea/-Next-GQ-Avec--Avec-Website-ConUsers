@@ -54,6 +54,7 @@ export const UsersTable = ({ users }: Props) => {
                 className="text-sm w-full p-2 text-gray-900">
                 <option value="admin">Admin</option>
                 <option value="user">User</option>
+                <option value="banned">Banned</option>
               </select>
 
             </td>

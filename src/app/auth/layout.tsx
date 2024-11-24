@@ -1,4 +1,5 @@
 import { auth } from "@/auth.config";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 
 export default async function AuthLayout({
@@ -16,7 +17,13 @@ export default async function AuthLayout({
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen ">
+
+      <div className="bg-avecBlueColor absolute w-full">
+        <div className="container m-auto">
+          <Image src="/images/logos/AVEC_MONOCROMO BLANCO_3M_transparente_Vertical.svg" className="w-[200px] lg:w-[300px]" width={300} height={300} alt="logo"></Image>
+        </div>
+      </div>
 
       {/*  <div className="opacity-10">
         <svg className='w-[200px] sm:w-[550px]' viewBox="0 0 124 29" fill="none" xmlns="http://www.w3.org/2000/svg">

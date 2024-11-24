@@ -14,14 +14,37 @@ export const CarSlideshowV2 = ({ car, className }: Props) => {
 
 
   // Construye el array de imágenes
-  const images = (car.images ?? []).map((image) => ({
-    original: `/images/usados/${image}`,
-    thumbnail: `/images/usados/${image}`,
-  }));
+  // const images = (car.images ?? []).map((image) => ({
+  //   original: image,
+  //   thumbnail: `/images/usados/${image}` || image,
+  // }));
+
+  const images = (car.images ?? []).length > 0
+    ? car.images?.map((image) => {
+      const isCloudinaryImage = image.startsWith("https://res.cloudinary.com");
+
+      return {
+        original: isCloudinaryImage ? `${image}` : `/images/usados/${image}`,
+        thumbnail: isCloudinaryImage ? `${image}` : `/images/usados/${image}`,
+      };
+    })
+    : [
+      {
+        original: "/images/placeholder.jpg", // Imagen predeterminada
+        thumbnail: "/images/placeholder.jpg", // Thumbnail predeterminado
+      },
+    ];
 
 
   return (
     <div className={`${className}`}>
+
+
+      {/*  <pre>
+        {JSON.stringify(images, null, 2)}
+      </pre> */}
+
+
       <div className='2xl:hidden'>
 
         <p className='font-medium'>{car.year} | {Number(car.km).toLocaleString('es-ES')} km</p>

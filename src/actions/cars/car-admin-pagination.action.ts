@@ -50,7 +50,7 @@ interface FilterOptions extends PaginationOptions {
   orderBy?: { field: string; direction: string };
 }
 
-export const getPaginatedCarWithImages = async ({
+export const getPaginatedCarWithImagesAdmin = async ({
   page = 1,
   take = 12,
   brands,
@@ -62,28 +62,24 @@ export const getPaginatedCarWithImages = async ({
   mileageRange,
   orderBy,
 }: FilterOptions = {}): Promise<PaginatedCarResponse> => {
-
-  // Validación de page y take
   const validPage = isNaN(Number(page)) || page < 1 ? 1 : page;
   const validTake = isNaN(Number(take)) || take < 1 ? 12 : take;
 
   try {
-    // Construcción del filtro
     const whereClause: Prisma.CarWhereInput = {
       operationType: "usado",
     };
-    // Filtro de marcas
+
     if (brands && brands.length > 0) {
       const brandsFromDb = await prisma.brand.findMany({
         where: { name: { in: brands } },
         select: { id: true },
       });
       if (brandsFromDb.length > 0) {
-        whereClause.brandId = { in: brandsFromDb.map(brand => brand.id) };
+        whereClause.brandId = { in: brandsFromDb.map((brand) => brand.id) };
       }
     }
 
-    // Otros filtros
     if (fuelTypes && fuelTypes.length > 0) whereClause.fuelType = { in: fuelTypes };
     if (transmissions && transmissions.length > 0) whereClause.transmission = { in: transmissions };
     if (bodyStyles && bodyStyles.length > 0) whereClause.bodyStyle = { in: bodyStyles };
@@ -91,10 +87,11 @@ export const getPaginatedCarWithImages = async ({
     if (mileageRange) whereClause.km = { gte: mileageRange.min, lte: mileageRange.max };
     if (priceRange) whereClause.price = { gte: priceRange.min, lte: priceRange.max };
 
-    // Ordenamiento
-    const orderByClause = orderBy ? { [orderBy.field]: orderBy.direction } : undefined;
+    // Ordenar por fecha de carga
+    const orderByClause = orderBy
+      ? { [orderBy.field]: orderBy.direction }
+      : { createdAt: "desc" }; // Orden descendente por fecha de creación
 
-    // Obtención de autos y sus imágenes
     const cars = await prisma.car.findMany({
       where: whereClause,
       take: Number(validTake),
@@ -106,19 +103,15 @@ export const getPaginatedCarWithImages = async ({
       orderBy: orderByClause,
     });
 
-    // Conteo de autos y cálculo de páginas totales
     const totalCounter = await prisma.car.count({ where: whereClause });
     const totalPages = Math.ceil(totalCounter / Number(validTake));
-
-
-
 
     return {
       currentPage: validPage,
       totalPages: totalPages,
-      cars: cars.map(car => ({
+      cars: cars.map((car) => ({
         id: car.id,
-        images: car.CarImage.map(image => image.url),
+        images: car.CarImage.map((image) => image.url),
         vin: car.vin,
         licensePlate: car.licensePlate,
         operationType: car.operationType,
@@ -139,11 +132,8 @@ export const getPaginatedCarWithImages = async ({
         bodyStyle: car.bodyStyle,
         doors: car.doors,
         currency: car.currency,
-
       })),
-
     };
-
   } catch (error) {
     console.error("Error al obtener los autos:", error);
     throw new Error(`Error al obtener los autos: ${error}`);

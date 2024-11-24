@@ -16,6 +16,7 @@ datasource db {
 enum Role {
   admin
   user
+  banned
 }
 
 model Brand {
@@ -27,7 +28,7 @@ model Brand {
 }
 
 model Car {
-  id            String  @id @default(uuid())
+  id            String   @id @default(uuid())
   vin           String
   licensePlate  String
   operationType String
@@ -43,9 +44,10 @@ model Car {
   engine        String
   description   String?
   inStock       Int
-  slug          String  @unique
+  slug          String   @unique
   doors         Int
   currency      String // pesos, dollars
+  createdAt     DateTime @default(now())
 
   bodyStyle   String // carroceria
   vehicleTier String // importado
@@ -68,11 +70,12 @@ model CarImage {
 }
 
 model User {
-  id            String    @id @default(uuid())
-  name          String
-  email         String    @unique
-  emailVerified DateTime? // si quisieramos que el usuario verifique su email, etc.
-  password      String
-  role          Role      @default(user)
-  image         String?
+  id             String    @id @default(uuid())
+  name           String
+  email          String    @unique
+  emailVerified  DateTime? // si quisieramos que el usuario verifique su email, etc.
+  password       String
+  role           Role      @default(user)
+  image          String?
+  failedAttempts Int       @default(0) // Nuevo campo
 }

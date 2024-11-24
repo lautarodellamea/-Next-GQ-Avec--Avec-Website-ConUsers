@@ -12,7 +12,7 @@ export default async function ProfilePage() {
 
   return (
     <div className="top-separator">
-      <h1>Profile Page</h1>
+      <h1>Buenvenid@ {session.user.name}</h1>
       <pre>
         {
           JSON.stringify(session.user, null, 2)
